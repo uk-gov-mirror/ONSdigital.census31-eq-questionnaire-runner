@@ -76,8 +76,8 @@ def test_case_ref_should_be_set_in_payload(fake_questionnaire_schema):
     answer_object = convert_answers_v2(fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT)
 
     assert answer_object["survey_metadata"]["case_ref"], questionnaire_store.data_stores.metadata["survey_metadata"][
-        "data"
-    ]["case_ref"]
+        "case_ref"
+    ]
 
 
 def test_display_address_should_be_set_in_payload_metadata(fake_questionnaire_schema):
@@ -86,8 +86,8 @@ def test_display_address_should_be_set_in_payload_metadata(fake_questionnaire_sc
     payload = convert_answers_v2(fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT)
 
     assert payload["survey_metadata"]["display_address"], questionnaire_store.data_stores.metadata["survey_metadata"][
-        "data"
-    ]["display_address"]
+        "display_address"
+    ]
 
 
 def test_converter_raises_runtime_error_for_unsupported_version():

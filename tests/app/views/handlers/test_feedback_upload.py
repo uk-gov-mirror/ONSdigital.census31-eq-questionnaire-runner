@@ -7,8 +7,6 @@ from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.views.handlers.feedback import FeedbackMetadata, FeedbackPayloadV2
 from tests.app.views.handlers.conftest import (
     case_id,
-    case_ref,
-    case_type,
     channel,
     collection_exercise_sid,
     data_version,
@@ -16,27 +14,23 @@ from tests.app.views.handlers.conftest import (
     feedback_count,
     feedback_text,
     feedback_type,
-    form_type,
     language_code,
     period_id,
-    period_str,
     ref_p_end_date,
     ref_p_start_date,
-    region_code,
     ru_name,
     ru_ref,
     schema_name,
     started_at,
-    survey_id,
     tx_id,
     user_id,
 )
 
 
 @freeze_time(datetime.now(tz=timezone.utc).isoformat())
-def test_feedback_payload_v2(session_data_feedback, schema_feedback, metadata_v2, response_metadata):
+def test_feedback_payload(session_data_feedback, schema_feedback, metadata, response_metadata):
     feedback_payload = FeedbackPayloadV2(
-        metadata=metadata_v2,
+        metadata=metadata,
         response_metadata=response_metadata,
         schema=schema_feedback,
         case_id=case_id,
@@ -59,24 +53,18 @@ def test_feedback_payload_v2(session_data_feedback, schema_feedback, metadata_v2
         "flushed": False,
         "launch_language_code": "en",
         "origin": "uk.gov.ons.edc.eq",
-        "region_code": region_code,
         "schema_name": schema_name,
         "started_at": started_at,
         "submission_language_code": language_code,
         "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
         "survey_metadata": {
-            "survey_id": survey_id,
-            "case_ref": case_ref,
-            "case_type": case_type,
-            "display_address": display_address,
-            "form_type": form_type,
-            "period_id": period_id,
-            "period_str": period_str,
-            "ref_p_end_date": ref_p_end_date,
-            "ref_p_start_date": ref_p_start_date,
-            "ru_name": ru_name,
-            "ru_ref": ru_ref,
             "user_id": user_id,
+            "period_id": period_id,
+            "ru_ref": ru_ref,
+            "ru_name": ru_name,
+            "ref_p_start_date": ref_p_start_date,
+            "ref_p_end_date": ref_p_end_date,
+            "display_address": display_address,
         },
         "tx_id": tx_id,
         "type": "uk.gov.ons.edc.eq:feedback",
@@ -114,11 +102,11 @@ def test_feedback_metadata():
     assert feedback_metadata() == expected_metadata
 
 
-def test_feedback_metadata_with_receipting_keys():
-    receipting_keys = {"qid": "1"}
+def test_feedback_metadata_with_questionnaire_id():
+    additional_keys = {"questionnaire_id": "1"}
 
-    feedback_metadata = FeedbackMetadata(case_id, tx_id, **receipting_keys)
+    feedback_metadata = FeedbackMetadata(case_id, tx_id, **additional_keys)
 
-    expected_metadata = {"case_id": case_id, "tx_id": tx_id, "qid": "1"}
+    expected_metadata = {"case_id": case_id, "tx_id": tx_id, "questionnaire_id": "1"}
 
     assert feedback_metadata() == expected_metadata

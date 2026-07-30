@@ -12,7 +12,6 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL
-from tests.app.parser.conftest import get_response_expires_at
 
 RAW_METADATA_V2 = {
     "version": AuthPayloadVersion.V2.value,
@@ -21,26 +20,21 @@ RAW_METADATA_V2 = {
     "collection_exercise_sid": "test-sid",
     "account_service_url": ACCOUNT_SERVICE_BASE_URL,
     "survey_metadata": {
-        "data": {
-            "period_id": "2016-02-01",
-            "period_str": "2016-01-01",
-            "ref_p_start_date": "2016-02-02",
-            "ref_p_end_date": "2016-03-03",
-            "ru_ref": "12345678901A",
-            "ru_name": "Apple",
-            "case_type": "SPG",
-            "form_type": "I",
-            "case_ref": "1000000000000001",
-            "display_address": "68 Abingdon Road, Goathill",
-            "user_id": "789473423",
-        },
+        "period_id": "2016-02-01",
+        "ref_p_start_date": "2016-02-02",
+        "ref_p_end_date": "2016-03-03",
+        "ru_ref": "12345678901A",
+        "ru_name": "Apple",
+        "case_type": "SPG",
+        "form_type": "I",
+        "case_ref": "1000000000000001",
+        "display_address": "68 Abingdon Road, Goathill",
+        "user_id": "789473423",
     },
     "response_id": "1234567890123456",
     "case_id": str(uuid.uuid4()),
-    "region_code": "GB-ENG",
     "channel": "RH",
     "jti": str(uuid.uuid4()),
-    "response_expires_at": get_response_expires_at(),
 }
 METADATA_V2 = MetadataProxy.from_dict(RAW_METADATA_V2)
 
