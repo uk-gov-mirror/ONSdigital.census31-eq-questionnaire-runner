@@ -16,6 +16,13 @@ from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.json import json_dumps
 
 
+def get_receipting_metadata(metadata: MetadataProxy) -> dict:
+    receipting_metadata = {}
+    if metadata.survey_metadata and "questionnaire_id" in metadata.survey_metadata:
+        receipting_metadata["questionnaire_id"] = metadata.survey_metadata["questionnaire_id"]
+    return receipting_metadata
+
+
 class SubmissionHandler:
     def __init__(
         self,
@@ -46,9 +53,7 @@ class SubmissionHandler:
             KEY_PURPOSE_SUBMISSION,
         )
 
-        additional_metadata = {}
-        if self._metadata.survey_metadata and "questionnaire_id" in self._metadata.survey_metadata:
-            additional_metadata["questionnaire_id"] = self._metadata.survey_metadata["questionnaire_id"]
+        additional_metadata = get_receipting_metadata(self._metadata)
 
         # Type ignore: current_app can return empty Local Proxy. Similar to other files, this is ignored.
         submitted = current_app.eq["submitter"].send_message(  # type: ignore

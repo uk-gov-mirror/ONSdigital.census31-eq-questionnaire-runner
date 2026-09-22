@@ -9,6 +9,7 @@ from app.data_models.data_stores import DataStores
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE, QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
+from app.settings import CENSUS_PERIOD_ID
 from app.submitter.convert_payload_0_0_1 import convert_answers_to_payload_0_0_1
 from app.submitter.convert_payload_0_0_3 import convert_answers_to_payload_0_0_3
 
@@ -71,6 +72,10 @@ def convert_answers_v2(
         payload["schema_name"] = metadata.schema_name
     elif metadata.schema_url:
         payload["schema_url"] = metadata.schema_url
+
+    if metadata.schema:
+        payload["schema"] = metadata.schema
+        payload["period_id"] = CENSUS_PERIOD_ID
 
     if metadata.survey_metadata:
         payload["survey_metadata"] = metadata.survey_metadata
