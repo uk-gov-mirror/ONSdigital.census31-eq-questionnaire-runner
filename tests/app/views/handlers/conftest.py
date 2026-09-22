@@ -15,23 +15,21 @@ from app.questionnaire import QuestionnaireSchema
 time_to_freeze = datetime.now(timezone.utc).replace(second=0, microsecond=0)
 tx_id = "tx_id"
 response_id = "1234567890123456"
-period_id = "2016-02-01"
-ref_p_start_date = "2016-02-02"
-ref_p_end_date = "2016-03-03"
-ru_ref = "12345678901A"
-ru_name = "ru_name"
+ru_ref = "uprn:00001"
 user_id = "789473423"
+questionnaire_id = "1234567890"
 schema_name = "1_0000"
 feedback_count = 1
 display_address = "68 Abingdon Road, Goathill"
 collection_exercise_sid = "ce_sid"
 case_id = "case_id"
+case_type = "HH"
 data_version = "0.0.1"
 feedback_type = "Feedback type"
 feedback_text = "Feedback text"
 started_at = str(datetime.now(tz=timezone.utc).isoformat())
 language_code = "cy"
-channel = "H"
+channel = "RH"
 region_code = "GB_WLS"
 
 
@@ -104,18 +102,21 @@ def metadata():
             "tx_id": tx_id,
             "case_id": case_id,
             "schema_name": schema_name,
+            "schema": {
+                "survey": "CENSUS",
+                "form_type": "H",
+                "region_code": "GB-WLS",
+            },
             "collection_exercise_sid": collection_exercise_sid,
             "response_id": response_id,
             "channel": channel,
             "account_service_url": "account_service_url",
             "survey_metadata": {
                 "user_id": user_id,
-                "period_id": period_id,
-                "ru_ref": ru_ref,
-                "ru_name": ru_name,
-                "ref_p_start_date": ref_p_start_date,
-                "ref_p_end_date": ref_p_end_date,
                 "display_address": display_address,
+                "questionnaire_id": questionnaire_id,
+                "case_type": case_type,
+                "ru_ref": ru_ref,
             },
         }
     )

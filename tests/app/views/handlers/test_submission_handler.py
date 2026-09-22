@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 
+from app.settings import CENSUS_PERIOD_ID
 import pytest
 from freezegun import freeze_time
 
@@ -88,18 +89,22 @@ def test_submission_payload_structure_v2(app, submission_payload_session_store, 
         "origin": "uk.gov.ons.edc.eq",
         "collection_exercise_sid": "ce_sid",
         "schema_name": "1_0000",
+        "schema": {
+            "survey": "CENSUS",
+            "form_type": "H",
+            "region_code": "GB-WLS",
+        },
         "flushed": False,
         "submitted_at": datetime.now(timezone.utc).isoformat(),
         "launch_language_code": "en",
-        "channel": "H",
+        "channel": "RH",
+        "period_id": CENSUS_PERIOD_ID,
         "survey_metadata": {
-            "period_id": "2016-02-01",
-            "ref_p_start_date": "2016-02-02",
-            "ref_p_end_date": "2016-03-03",
-            "ru_ref": "12345678901A",
-            "ru_name": "ru_name",
-            "display_address": "68 Abingdon Road, Goathill",
             "user_id": "789473423",
+            "display_address": "68 Abingdon Road, Goathill",
+            "questionnaire_id": "1234567890",
+            "case_type": "HH",
+            "ru_ref": "uprn:00001",
         },
         "submission_language_code": "cy",
         "data": {"answers": [], "lists": []},

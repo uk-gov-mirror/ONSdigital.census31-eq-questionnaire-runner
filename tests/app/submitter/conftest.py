@@ -34,9 +34,10 @@ RAW_METADATA = {
 METADATA = MetadataProxy.from_dict(RAW_METADATA)
 
 
-def get_questionnaire_store():
+@pytest.fixture
+def questionnaire_store():
     user_answer = Answer(answer_id="GHI", value=0, list_item_id=None)
-
+    
     storage = MagicMock()
     storage.get_user_data = MagicMock(return_value=("{}", "ce_sid", 1, None))
     storage.add_or_update = MagicMock()

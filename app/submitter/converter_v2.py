@@ -74,7 +74,7 @@ def convert_answers_v2(
         payload["schema_url"] = metadata.schema_url
 
     if metadata.schema:
-        payload["schema"] = metadata.schema
+        payload["schema"] = metadata.schema.to_dict()
         payload["period_id"] = CENSUS_PERIOD_ID
 
     if metadata.survey_metadata:
@@ -94,6 +94,7 @@ def convert_answers_v2(
 def get_optional_payload_properties(metadata: MetadataProxy, response_metadata: MutableMapping) -> dict:
     payload = {}
 
+    # TODO: region_code ??? 
     for key in ["channel", "region_code"]:
         if value := metadata[key]:
             payload[key] = value

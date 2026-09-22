@@ -36,6 +36,13 @@ class SchemaSelector:
     form_type: str
     region_code: str
 
+    def to_dict(self) -> dict[str, str]:
+        return {
+            "survey": self.survey,
+            "form_type": self.form_type,
+            "region_code": self.region_code,
+        }
+
 
 @dataclass(frozen=True)
 class MetadataProxy:

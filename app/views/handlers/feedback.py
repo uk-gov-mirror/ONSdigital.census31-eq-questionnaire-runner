@@ -99,11 +99,10 @@ class Feedback:
         )
 
         additional_metadata = get_receipting_metadata(metadata)
-
-        feedback_metadata = FeedbackMetadata(tx_id=tx_id, case_id=case_id, **additional_metadata)
+        feedback_metadata = {"tx_id": tx_id, "case_id": case_id, **additional_metadata}
 
         submitter: GCSFeedbackSubmitter | LogFeedbackSubmitter = current_app.eq["feedback_submitter"]  # type: ignore
-        if not submitter.upload(feedback_metadata(), encrypted_message):
+        if not submitter.upload(feedback_metadata, encrypted_message):
             raise FeedbackUploadFailed()
 
         self._session_store.save()
@@ -164,18 +163,6 @@ class Feedback:
             # Type ignore: the type of the .get() returned value is Any
             return submission_schema.get("feedback", False)  # type: ignore
         return False
-
-
-class FeedbackMetadata:
-    def __init__(self, case_id: str, tx_id: str, **kwargs: dict):
-        self.case_id = case_id
-        self.tx_id = tx_id
-
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
-    def __call__(self) -> dict[str, str]:
-        return vars(self)
 
 
 class FeedbackPayloadV2:
@@ -239,7 +226,7 @@ class FeedbackPayloadV2:
             payload["survey_metadata"] = self.metadata.survey_metadata
 
         if self.metadata.schema:
-            payload["schema"] = self.metadata.schema
+            payload["schema"] = self.metadata.schema.to_dict()
             payload["period_id"] = CENSUS_PERIOD_ID
 
         optional_properties = converter_v2.get_optional_payload_properties(self.metadata, self.response_metadata)
